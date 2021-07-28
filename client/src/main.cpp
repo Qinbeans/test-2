@@ -5,9 +5,20 @@
 #include <stdio.h>
 
 int main(){
+   int result = 1;
    printf("<--Start-->\n");
    network net("localhost",25570,1,2,0,0);
-   net.start();
-   net.connect("Hello There");
+   if(net.start()==EXIT_FAILURE){
+      printf("<--FAILED-->\n");
+      return EXIT_FAILURE;
+   }
+   if(net.connect("Hello There")==EXIT_FAILURE){
+      printf("<--FAILED-->\n");
+      return EXIT_FAILURE;
+   }
+   if(net.disconnect()==EXIT_FAILURE){
+      printf("<--FAILED-->\n");
+      return EXIT_FAILURE;
+   }
    printf("<--Done-->\n");
 }

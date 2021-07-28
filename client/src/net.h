@@ -28,11 +28,12 @@ class network{
    public:
       network();//default
       network(string address, unsigned short port, int outgoing, int channels, int inbandwidth, int outbandwidth);
+      ~network();
       char* poll();//[0] = status, [...] = actions
       bool start();//check connection
-      bool close();
+      bool disconnect();
       bool connect(string connectData);
-      void clean();
+      void sendPacket(string data);
 };
 
 #endif

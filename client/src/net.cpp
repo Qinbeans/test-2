@@ -29,6 +29,11 @@ network::network(){
    outbandwidth = 0;//assume any amount out bandwidth
 }
 
+network::~network(){
+   delete (ENetHost*)client;
+   delete (ENetPeer*)server;
+}
+
 network::network(string address, unsigned short port, int outgoing, int channels, int inbandwidth, int outbandwidth){
    addressName = address;
    this->port = port;
@@ -82,9 +87,30 @@ bool network::connect(string connectData){
    return EXIT_FAILURE;
 }
 
-void network::clean(){
-   printf("<Cleaning Memory>\n");
-   free((ENetHost*)client);
-   free((ENetPeer*)server);
+void network::sendPacket(string data){
+   ENetPacket* packet = enet_packet_create(data.c_str(), strlen(data.c_str())+1,ENET_PACKET_FLAG_RELIABLE);
+   enet_peer_send((ENetPeer*)server, 0, packet);
 }
 
+bool network::disconnect(){
+   ENetHost* workingClient = (ENetHost*) client;
+   ENetEvent netEvent;
+   if(workingClient==NULL){
+      printf("<Client does not exist>\n");
+      return EXIT_FAILURE;
+   }
+   while(enet_host_service(workingClient,&netEvent, 100) > 0){
+      switch(netEvent.type){
+         case ENET_EVENT_TYPE_RECEIVE:{
+            enet_packet_destroy(netEvent.packet);
+            break;
+         }
+         case ENET_EVENT_TYPE_DISCONNECT:{
+            printf("<Disconnection Succeeded>");
+            break;
+         }
+      }
+   }
+   enet_host_destroy(workingClient);
+   return EXIT_SUCCESS;
+}
