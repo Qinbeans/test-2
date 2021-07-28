@@ -31,7 +31,7 @@ class network{
       char* poll();//[0] = status, [...] = actions
       bool start();//check connection
       bool close();
-      bool connect();
+      bool connect(string connectData);
       void clean();
 };
 

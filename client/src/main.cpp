@@ -8,6 +8,6 @@ int main(){
    printf("<--Start-->\n");
    network net("localhost",25570,1,2,0,0);
    net.start();
-   net.connect();
+   net.connect("Hello There");
    printf("<--Done-->\n");
 }

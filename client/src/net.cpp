@@ -38,7 +38,7 @@ network::network(string address, unsigned short port, int outgoing, int channels
    this->outbandwidth = outbandwidth;
 }
 
-bool network::connect(){
+bool network::connect(string connectData){
    ENetPeer* workingServer;
    ENetHost* workingClient;
    ENetEvent netEvent;
@@ -48,9 +48,10 @@ bool network::connect(){
       tempAdd.port = port;
       server = enet_host_connect((ENetHost*)client,&tempAdd,2,0);
       if((ENetPeer*)server==NULL){
-         printf("<ENet Bad Client>\n");
+         printf("<Connection impossible>\n");
          return EXIT_FAILURE;
       }
+      //setup so we can easily work on networking without repetitive casting
       workingServer = (ENetPeer*)server;
       workingClient = (ENetHost*)client;
    }else{
@@ -62,9 +63,9 @@ bool network::connect(){
       switch(netEvent.type){
          case ENET_EVENT_TYPE_CONNECT:{
             printf("<Connected to %d:%d>\n",tempAdd.host,tempAdd.port);
-            // string data = "0 "+me->get_packet();
-            // ENetPacket* user = enet_packet_create(data.c_str(), data.size()+1,ENET_PACKET_FLAG_RELIABLE);
-            // enet_peer_send(peer, 0, user);
+            string data = "0 "+connectData;
+            ENetPacket* user = enet_packet_create(data.c_str(), data.size()+1,ENET_PACKET_FLAG_RELIABLE);
+            enet_peer_send(workingServer, 0, user);
             return EXIT_SUCCESS;
          }
          default:{
@@ -80,6 +81,7 @@ bool network::connect(){
    workingClient = NULL;
    return EXIT_FAILURE;
 }
+
 void network::clean(){
    printf("<Cleaning Memory>\n");
    free((ENetHost*)client);
