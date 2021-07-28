@@ -5,7 +5,7 @@
 		}
 	],
 	"settings": {
-		"C_Cpp.default.includePath": ["$default" , "C:\\msys64\\mingw64\\include", ".\\include"],
+		"C_Cpp.default.includePath": ["$default" , "C:\\msys64\\mingw64\\include", ".\\client\\include",".\\server\\include"],
 		"files.associations": {
 			"algorithm": "cpp",
 			"atomic": "cpp",
@@ -102,7 +102,9 @@
 			"string_view": "cpp",
 			"cinttypes": "cpp",
 			"*.ipp": "cpp",
-			"*.inc": "cpp"
+			"*.inc": "cpp",
+			"format": "cpp",
+			"forward_list": "cpp"
 		}
 	}
 }
