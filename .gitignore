@@ -1,4 +1,6 @@
-bin/*
+client/bin/*
+server/bin/*
 .vscode
 .DS_Store
 .2D_Game
+test2.code-workspace
