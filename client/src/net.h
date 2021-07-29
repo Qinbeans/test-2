@@ -10,6 +10,10 @@
 
 #include <string>
 
+#ifndef _WIN32
+#include <string.h>
+#endif
+
 using std::string;
 
 #ifndef NET_H
