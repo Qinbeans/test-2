@@ -5,7 +5,7 @@
 #define TOOL_H
 
 #define CHUNK 50
-#define MAX_DATA 4
+#define NUM_DATA 5
 
 using std::string;
 
@@ -51,6 +51,8 @@ string read(string file_loc, string filename);
 
 void write(string file_loc, string filename, string message);
 
-void split(string strong_data[MAX_DATA], const char delim, string data);
+void split(string strong_data[NUM_DATA], const char delim, string data);
+
+string get_game_dir();
 
 #endif

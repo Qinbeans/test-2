@@ -8,6 +8,7 @@
 
 #define DEFAULT_NAME "NULL"
 #define DEFAULT_ID "NULL"
+#define DEFAULT_IP "localhost"
 #define DEFAULT_FULL 0
 #define DEFAULT_FPS 60
 
@@ -66,12 +67,14 @@ string read(string file_loc, string filename){
    string data_loc = file_loc + filename;
    string content = "";
    if(!DirectoryExists(file_loc.c_str())){
-      if(OS == "uni" || OS == "mac"){
+      #if defined(unix) || defined(__unix__) || defined(__unix) || defined(__MACH__)
          mkdir(file_loc.c_str(),0744);
-      }
+      #else
+         mkdir(file_loc.c_str());
+      #endif
    }
    if(!FileExists(data_loc.c_str())){
-      content = string(DEFAULT_NAME)+" "+string(DEFAULT_ID)+" "+std::to_string(DEFAULT_FULL)+" "+std::to_string(DEFAULT_FPS);
+      content = string(DEFAULT_NAME)+" "+string(DEFAULT_ID)+" "+string(DEFAULT_IP)+" "+std::to_string(DEFAULT_FPS)+" "+std::to_string(DEFAULT_FULL);
       SaveFileText(data_loc.c_str(),(char*)content.c_str());
    }else{
       content = LoadFileText(data_loc.c_str());
@@ -91,9 +94,11 @@ string read(string file_loc, string filename){
 void write(string file_loc, string filename, string message){
    string data_loc = file_loc + filename;
    if(!DirectoryExists(file_loc.c_str())){
-      if(OS == "uni" || OS == "mac"){
+      #if defined(unix) || defined(__unix__) || defined(__unix) || defined(__MACH__)
          mkdir(file_loc.c_str(),0744);
-      }
+      #else
+         mkdir(file_loc.c_str());
+      #endif
    }
    if(!FileExists(data_loc.c_str())){
       printf("<File being created>\n");
@@ -101,7 +106,7 @@ void write(string file_loc, string filename, string message){
    SaveFileText(data_loc.c_str(),(char*)message.c_str());
 }
 
-void split(string strong_data[MAX_DATA], const char delim, string data){
+void split(string strong_data[NUM_DATA], const char delim, string data){
    string temp;
    int out_index = 0;
    for(int i = 0; i < data.size(); i++){
@@ -115,4 +120,14 @@ void split(string strong_data[MAX_DATA], const char delim, string data){
       }
    }
    strong_data[out_index] = temp;
+}
+
+string get_game_dir(){
+   string base_dir = GAMEDIR;
+   if(OS == "win"){
+      base_dir = getenv("USERPROFILE") + base_dir;
+   }else{
+      base_dir = string(getenv("HOME"))+ "/" + base_dir;
+   }
+   return base_dir;
 }
