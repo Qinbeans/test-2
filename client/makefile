@@ -35,6 +35,9 @@ $(TARG):$(OBJ)
 $(OBJ): bin/$(PLAT)/%.o:src/%.cpp
 	$(CC) -c $(CFLAG) $< -o $@
 
+copyres:
+	cp src/res/* bin/$(PLAT)/res/
+
 clean:
 	rm $(BUILD)/$(PLAT)/*.o
 	rm $(TARG)
