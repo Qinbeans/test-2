@@ -1,4 +1,3 @@
-
 #include "raylib.h"
 #include <string>
 
@@ -6,8 +5,20 @@
 #define TOOL_H
 
 #define CHUNK 50
+#define MAX_DATA 4
 
 using std::string;
+
+#if defined(__APPLE__)
+#define GAMEDIR ".EON"
+const string OS = "mac";
+#elif defined(_WIN32)
+#define GAMEDIR "/AppData/LocalLow/EON"
+const string OS = "win";
+#else
+#define GAMEDIR ".EON"
+const string OS = "uni";
+#endif
 
 typedef struct Style{
    string name;
@@ -35,5 +46,11 @@ void set_sty_font(Style& style, float font);
 void set_sty_spacing(Style& style, float spacing);
 
 void set_sty_rect(Style& style, Rectangle rect);
+
+string read(string file_loc, string filename);
+
+void write(string file_loc, string filename, string message);
+
+void split(string strong_data[MAX_DATA], const char delim, string data);
 
 #endif

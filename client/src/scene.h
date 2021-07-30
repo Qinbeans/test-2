@@ -12,11 +12,11 @@ class scene{
       unsigned int height;
       bool fscrn;
       float scale;
+      virtual void update(){};
+      virtual void init(){};
    public:
       scene();
       scene(string name, unsigned int width, unsigned int height, int resize);
-      virtual void update(){};
-      virtual void init(){};
       void toggle_fullscreen();
       void toggle_resizable();
       void set_width(unsigned int width);

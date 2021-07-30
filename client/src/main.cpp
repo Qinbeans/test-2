@@ -17,7 +17,7 @@ int main(){
    //    printf("<--FAILED-->\n");
    //    return EXIT_FAILURE;
    // }
-   launcher launchpage("Welcome",1920,1080,FLAG_WINDOW_RESIZABLE);
+   launcher launchpage("Welcome",960,540,FLAG_WINDOW_RESIZABLE);
    printf("<--Done-->\n");
    return EXIT_SUCCESS;
 }

@@ -1,6 +1,15 @@
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 #include "tool.h"
+#include "unistd.h"
+#if defined(unix) || defined(__unix__) || defined(__unix) || defined(__MACH__)
+#include <sys/stat.h>
+#endif
+
+#define DEFAULT_NAME "NULL"
+#define DEFAULT_ID "NULL"
+#define DEFAULT_FULL 0
+#define DEFAULT_FPS 60
 
 void lbl_style(Style& style,string name, float font, float spacing,int align, int color, Rectangle frame){
    style = {name,font,spacing,align,color,frame};
@@ -51,4 +60,59 @@ void set_sty_spacing(Style& style, float spacing){
 
 void set_sty_rect(Style& style, Rectangle rect){
    style.frame=rect;
+}
+
+string read(string file_loc, string filename){
+   string data_loc = file_loc + filename;
+   string content = "";
+   if(!DirectoryExists(file_loc.c_str())){
+      if(OS == "uni" || OS == "mac"){
+         mkdir(file_loc.c_str(),0744);
+      }
+   }
+   if(!FileExists(data_loc.c_str())){
+      content = string(DEFAULT_NAME)+" "+string(DEFAULT_ID)+" "+std::to_string(DEFAULT_FULL)+" "+std::to_string(DEFAULT_FPS);
+      SaveFileText(data_loc.c_str(),(char*)content.c_str());
+   }else{
+      content = LoadFileText(data_loc.c_str());
+   }
+   return content;
+}
+
+   // string base_dir = GAMEDIR;
+   // string content = message;
+   // if(OS == "win"){
+   //    base_dir = getenv("USERPROFILE") + base_dir;
+   // }else{
+   //    base_dir = string(getenv("HOME"))+ "/" + base_dir;
+   // }
+   // string data_loc = base_dir + "/gamedata.inline";
+
+void write(string file_loc, string filename, string message){
+   string data_loc = file_loc + filename;
+   if(!DirectoryExists(file_loc.c_str())){
+      if(OS == "uni" || OS == "mac"){
+         mkdir(file_loc.c_str(),0744);
+      }
+   }
+   if(!FileExists(data_loc.c_str())){
+      printf("<File being created>\n");
+   }
+   SaveFileText(data_loc.c_str(),(char*)message.c_str());
+}
+
+void split(string strong_data[MAX_DATA], const char delim, string data){
+   string temp;
+   int out_index = 0;
+   for(int i = 0; i < data.size(); i++){
+      if(data[i] != delim){
+         temp += data[i];
+      }
+      else{
+         strong_data[out_index] = temp;
+         out_index++;
+         temp = "";
+      }
+   }
+   strong_data[out_index] = temp;
 }
