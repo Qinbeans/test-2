@@ -66,7 +66,7 @@ void launcher::update(){
          }else{
             validity = "VALID";
          }
-         if(net->connect("Hello There")==EXIT_FAILURE){
+         if(net->connect("Hello")==EXIT_FAILURE){
             printf("<--BAD CONNECTION TO: %s-->\n",gamefile[2].c_str());
             validity = "No Connection";
             lwidth = scale*20;
@@ -92,6 +92,28 @@ void launcher::update(){
          if(!connection_status){
             validity = "Not Connected";
             lwidth = scale*22;
+         }else{
+            lwidth = scale*15;
+            if(net->start()==EXIT_FAILURE){
+               printf("<--FAILED-->\n");
+               validity = "No Network";
+               connection_status = false;
+            }else{
+               validity = "VALID";
+            }
+            if(net->connect("0 "+gamefile[2]+" "+gamefile[3])==EXIT_FAILURE){
+               printf("<--BAD CONNECTION TO: %s-->\n",gamefile[2].c_str());
+               validity = "No Connection";
+               lwidth = scale*20;
+               connection_status = false;
+            }else{
+               validity = "VALID";
+            }
+            //
+            //
+            //poll for response
+            //
+            //
          }
          if(validity=="VALID"){
             lbl_style(UI[7],validity,font,spacing,GUI_TEXT_ALIGN_CENTER,ColorToInt(GREEN),{width-(twidth+scale),scale*19,lwidth,bheight});

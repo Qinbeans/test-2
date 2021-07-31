@@ -6,7 +6,7 @@ TIME = $(shell date '+%H:%M')
 AUTHOR = $(shell git var GIT_AUTHOR_IDENT | cut -d ' ' -f3)
 FILE := test-$(DATE)
 CFLAG := -std=c++17 -Ofast -I include -g
-LFLAG := -lpthread -lraylib -lenet 
+LFLAG := -lpthread -lraylib -lenet
 
 ifeq ($(OS),Windows_NT)
 	CC := clang++
@@ -20,14 +20,15 @@ else
 	else
 		PLAT := Mac
 		CFLAG += -I /opt/homebrew/include
-		LFLAG += -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL -L lib/Mac -L /opt/homebrew/lib
+		LFLAG += -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL -L lib/Mac
+		OCMD = ./appify.sh $(TARG) -r $(BUILD)/Mac/res
 	endif
 endif
 
 OBJ = $(patsubst src/%.cpp,$(BUILD)/$(PLAT)/%.o,$(wildcard src/*.cpp))
 TARG := $(TARG)/$(PLAT)/$(FILE)
 
-all: $(TARG) $(OBJ)
+all: $(TARG) $(OBJ) appify
 
 $(TARG):$(OBJ)
 	$(CC) -o $(TARG) $(OBJ) $(LFLAG)
@@ -41,6 +42,7 @@ copyres:
 clean:
 	rm $(BUILD)/$(PLAT)/*.o
 	rm $(TARG)
+	rm -rf $(BUILD)/$(PLAT)/*.app
 
 updategit:
 	git commit -m "Updated on $(DATE) at $(TIME) by $(AUTHOR): $(COMMENTS)"
@@ -52,6 +54,9 @@ getinfo:
 
 date:
 	echo $(DATE)
+
+appify:
+	$(OCMD)
 
 init:
 	mkdir $(BUILD)

@@ -3,20 +3,19 @@ BUILD = bin
 TARG := $(BUILD)
 FILE := server
 CFLAG := -std=c++17 -Ofast  -I include
-LFLAG := -lpthread
+LFLAG := -lpthread -lenet
 
 ifeq ($(OS),Windows_NT)
 	CC := clang++
 	PLAT := Windows
-	LFLAG += -lenet -fopenmp -lwinmm -lws2_32
 else
 	OS = $(shell uname -s)
 	ifeq ($(OS), Linux)
 		PLAT := Linux
-		LFLAG += -L lib/Linux
 	else
 		PLAT := Mac
-		LFLAG += -fopenmp
+		CFLAG += -I /opt/homebrew/include
+		LFLAG += -L /opt/homebrew/lib
 	endif
 endif
 
