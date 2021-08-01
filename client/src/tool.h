@@ -21,11 +21,12 @@ const string OS = "uni";
 #endif
 
 /**
- * Name     |P_FLAGS|CLIENT DATA                   |SERVER DATA         |
- * ---------|-------|------------------------------|--------------------|
- * Connect  |0      |0 <ID> <USR PKT>              |0 <BOOL STAT>       |
- * Inventory|1      |1 <ID> <OX> <OY> <DX> <DY>    |1 <BOOL STAT>       |
- * Key Event|2      |2 <ID> <KEY EVENT> <KEY EVENT>|2 <E_TYPE> <dX> <dY>|
+ * Name     |P_FLAGS|CLIENT DATA                   |SERVER DATA              |
+ * ---------|-------|------------------------------|-------------------------|
+ * Connect  |0      |0 <ID> <USR PKT>              |0 <BOOL STAT>            |
+ * Inventory|1      |1 <ID> <OX> <OY> <DX> <DY>    |1 <BOOL STAT>            |
+ * Key Event|2      |2 <ID> <KEY EVENT> <KEY EVENT>|2 <E_TYPE> <dX> <dY>     |
+ * Recipient|3      |                              |3 <E_TYPE> <dX> <dY> <dZ>|
  * D <- Destination
  * O <- Origin
  * d <- Amount everyone moves in relation to the player
@@ -34,13 +35,15 @@ const string OS = "uni";
 typedef enum{
    CONNECT = 0,
    INV_EVT,
-   EVENT
+   EVENT,
+   RECIPIENT
 }P_FLAG;
 
 typedef enum{
    ATCK = 0,//attack
    XDIR,//x direction
-   YDIR//y direction
+   YDIR,//y direction
+   ZDIR
 }E_TYPE;
 
 typedef struct Style{

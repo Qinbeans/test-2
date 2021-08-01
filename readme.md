@@ -36,6 +36,9 @@ This will initialize the folders required for making the game and only needs to 
 -Raylib<br>
 Installation may vary, but most mainstream package managers have all these available
 
+# EXTRA
+[Explanation](architecture/explanation.md)
+
 # Premise
 This is just a fun little project to get to know code better.  A bonus is that we can play with friends.
 

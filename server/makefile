@@ -1,7 +1,9 @@
 CC = clang++
 BUILD = bin
 TARG := $(BUILD)
-FILE := server
+DATE = $(shell date '+%Y-%m-%d' )
+TIME = $(shell date '+%H:%M')
+FILE := server-$(DATE)
 CFLAG := -std=c++17 -Ofast  -I include
 LFLAG := -lpthread -lenet
 
@@ -14,8 +16,8 @@ else
 		PLAT := Linux
 	else
 		PLAT := Mac
-		CFLAG += -I /opt/homebrew/include
-		LFLAG += -L /opt/homebrew/lib
+		CFLAG += -I include
+		LFLAG += -L lib/$(PLAT)
 	endif
 endif
 
