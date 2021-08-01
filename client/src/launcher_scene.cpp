@@ -82,6 +82,7 @@ void launcher::update(){
             lbl_style(UI[7],validity,font,spacing,GUI_TEXT_ALIGN_CENTER,ColorToInt(GREEN),{width-(twidth+scale),scale*19,lwidth,bheight});
          }else{
             lbl_style(UI[7],validity,font,spacing,GUI_TEXT_ALIGN_CENTER,ColorToInt(RED),{width-(twidth+scale),scale*19,lwidth,bheight});
+            delete net;
          }
          concat_game = gamefile[0]+" "+gamefile[1]+" "+gamefile[2]+" "+gamefile[3]+" "+gamefile[4];
          write(file_loc,filename,concat_game);
