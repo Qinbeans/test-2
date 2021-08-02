@@ -1,3 +1,15 @@
+/**
+ * @file net.cpp
+ * @author Ryan Fong (rybeats@live.com)
+ * @brief A wrapper for ENet to do two things:
+ *    avoid conflicts with Raylib and to simplify ENet
+ * @version 0.1
+ * @date 2021-07-28
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include <enet/enet.h>
 #include "net.h"
 
