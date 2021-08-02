@@ -114,3 +114,25 @@ bool network::disconnect(){
    enet_host_destroy(workingClient);
    return EXIT_SUCCESS;
 }
+
+
+//poll outside main loop
+string network::poll(){
+   ENetHost* workingClient = (ENetHost*) client;
+   while(true){
+      ENetEvent event;
+      while(enet_host_service(workingClient,&event,100) > 0){
+         switch(event.type){
+            case ENET_EVENT_TYPE_RECEIVE:{
+               printf("<A packet of length %u containing %s was received from %s on channel %u.>\n",
+                  event.packet->dataLength,
+                  event.packet->data,
+                  event.peer->data,
+                  event.channelID);
+               enet_packet_destroy(event.packet);
+               break;
+            }
+         }
+      }
+   }
+}

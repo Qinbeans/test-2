@@ -6,12 +6,11 @@ TIME = $(shell date '+%H:%M')
 AUTHOR = $(shell git var GIT_AUTHOR_IDENT | cut -d ' ' -f3)
 FILE := test-$(DATE)
 CFLAG := -std=c++17 -Ofast -I include -g
-LFLAG := -lpthread -lraylib -lenet
+LFLAG := -static-libstdc++ -static-libgcc -lraylib -lenet
 
 ifeq ($(OS),Windows_NT)
-	CC := clang++
 	PLAT := Windows
-	LFLAG += -Wl,--allow-multiple-definition -lopengl32 -lgdi32 -lwinmm -L lib/Windows -lws2_32
+	LFLAG += -static -lpthread -Wl,--allow-multiple-definition -lopengl32 -lgdi32 -lwinmm -L lib/Windows -lws2_32
 else
 	OS = $(shell uname -s)
 	ifeq ($(OS), Linux)

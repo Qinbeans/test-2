@@ -1,5 +1,7 @@
 #include "launcher_scene.h"
 #include "raygui.h"
+#include <future>
+
 
 
 launcher::launcher(string name, unsigned int width, unsigned int height, int resize){
@@ -56,6 +58,8 @@ void launcher::update(){
       //Connect(WIP)
       case 0:{
          //Connect use new thread
+         string welcomeMSG = "Hello";
+         bool ret;
          lwidth = scale*15;
          net = new network(gamefile[2],25570,1,2,0,0);
          connection_status = true;
@@ -66,7 +70,7 @@ void launcher::update(){
          }else{
             validity = "VALID";
          }
-         if(net->connect("Hello")==EXIT_FAILURE){
+         if(net->connect(welcomeMSG)){
             printf("<--BAD CONNECTION TO: %s-->\n",gamefile[2].c_str());
             validity = "No Connection";
             lwidth = scale*20;
