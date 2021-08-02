@@ -1,3 +1,13 @@
+/**
+ * @file launcher_scene.h
+ * @author Ryan Fong (rybeats@live.com)
+ * @brief The header for the derived class launcher
+ * @version 0.1
+ * @date 2021-08-02
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include "scene.h"
 #include "tool.h"
 #include "net.h"
