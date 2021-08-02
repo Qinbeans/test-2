@@ -1,3 +1,16 @@
+/**
+ * @file tool.cpp
+ * @author Ryan Fong (rybeats@live.com)
+ * @brief Ambiguous code to help do small tasks.
+ *    Created partly because the C libraries used
+ *    were not very readable by themselves.
+ * @version 0.1
+ * @date 2021-08-02
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include "tool.h"
 #include <sys/stat.h>
 #include <unistd.h>
