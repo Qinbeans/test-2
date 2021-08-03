@@ -79,9 +79,9 @@ bool network::connect(string connectData){
    if(enet_host_service(workingClient, &netEvent,1000) > 0){
       switch(netEvent.type){
          case ENET_EVENT_TYPE_CONNECT:{
-            printf("<Connected to %d:%d>\n",tempAdd.host,tempAdd.port);
-            string data = "0 "+connectData;
-            ENetPacket* user = enet_packet_create(data.c_str(), data.size()+1,ENET_PACKET_FLAG_RELIABLE);
+            printf("<Connected to %x:%d>\n",tempAdd.host,tempAdd.port);
+            string data = "0 "+connectData+'\0';
+            ENetPacket* user = enet_packet_create(data.c_str(), data.size(),ENET_PACKET_FLAG_RELIABLE);
             enet_peer_send(workingServer, 0, user);
             return EXIT_SUCCESS;
          }

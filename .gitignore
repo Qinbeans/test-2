@@ -2,6 +2,10 @@ client/bin/*
 server/bin/*
 bin/*
 client/iqm.exe
+client/client.code-workspace
+client/.vscode
+server/server.code-workspace
+server/.vscode
 .vscode
 .DS_Store
 .2D_Game

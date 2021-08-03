@@ -117,14 +117,6 @@ void launcher::update(){
             }else{
                validity = "VALID";
             }
-            if(net->connect("0 "+gamefile[2]+" "+gamefile[3])==EXIT_FAILURE){
-               printf("<--BAD CONNECTION TO: %s-->\n",gamefile[2].c_str());
-               validity = "No Connection";
-               lwidth = scale*20;
-               connection_status = false;
-            }else{
-               validity = "VALID";
-            }
             //
             //
             //poll for response
