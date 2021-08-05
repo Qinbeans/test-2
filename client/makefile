@@ -15,7 +15,7 @@ else
 	OS = $(shell uname -s)
 	ifeq ($(OS), Linux)
 		PLAT := Linux
-		LFLAG += -L lib/Linux -lGL -lm -ldl -lrt -lX11
+		LFLAG += -lpthread -L lib/Linux -lGL -lm -ldl -lrt -lX11
 	else
 		PLAT := Mac
 		CFLAG += -I /opt/homebrew/include

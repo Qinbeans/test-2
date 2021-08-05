@@ -67,33 +67,33 @@ void network::sendPacket(string data){
    enet_peer_send((ENetPeer*)server, 0, packet);
 }
 
-string network::poll(){
-   printf("<Polling network>\n");
+void network::poll(string& data){
    ENetHost* me = (ENetHost*) client;
+   printf("<Polling network: %x:%d>\n",me->address.host,me->address.port);
    if(me == NULL){
       printf("<Empty Client>\n");
-      return "";
+      data = "";
+      return;
    }
    string out;
+   ENetEvent event;
    while(true){
-      ENetEvent event;
       while(enet_host_service(me,&event,10) > 0){
-         printf("<STAT>\n");
+         printf("<STAT: %d>\n",event.type);
          switch(event.type){
             case ENET_EVENT_TYPE_CONNECT:{
-               printf("<Connected from %x:%d, data: %s>\n",event.peer->address.host,event.peer->address.port,event.packet->data);
+               printf("<Connected from %x:%d>\n",event.peer->address.host,event.peer->address.port);
                break;
             }
             case ENET_EVENT_TYPE_RECEIVE:{
-               printf("<A packet of length %u containing %s was received from %s on channel %u.>\n",
+               printf("<A packet of length %u containing %s was received from %x.>\n",
                   event.packet->dataLength,
                   event.packet->data,
-                  (char*)event.peer->data,
-                  event.channelID);
+                  event.peer->address.host);
                // event.peer->address.host;
-               out = (char*)event.packet->data;
+               // out = (char*)event.packet->data;
                enet_packet_destroy(event.packet);
-               return out;
+               break;
             }
             case ENET_EVENT_TYPE_DISCONNECT:{
                printf("<%x:%d disconnected...>\n",event.peer->address.host,event.peer->address.port);

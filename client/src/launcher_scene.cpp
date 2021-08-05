@@ -69,19 +69,21 @@ void launcher::update(){
       //Connect(WIP)
       case 0:{
          //Connect use new thread
-         string welcomeMSG = "Hello";
          bool ret;
          lwidth = scale*15;
-         net = new network(gamefile[2],25570,1,2,0,0);
+         if(net!=NULL){
+            free(net);
+         }
+         net = new network();
          connection_status = true;
-         if(net->start()==EXIT_FAILURE){
+         if(net->init()==EXIT_FAILURE){
             printf("<--FAILED-->\n");
             validity = "No Network";
             connection_status = false;
          }else{
             validity = "VALID";
          }
-         if(net->connect(welcomeMSG)){
+         if(net->connect(gamefile[2],25570,"-1 "+gamefile[1])==EXIT_FAILURE){
             printf("<--BAD CONNECTION TO: %s-->\n",gamefile[2].c_str());
             validity = "No Connection";
             lwidth = scale*20;
@@ -89,10 +91,6 @@ void launcher::update(){
          }else{
             validity = "VALID";
          }
-         // if(net.disconnect()==EXIT_FAILURE){
-         //    printf("<--FAILED-->\n");
-         //    validity = "Disconnect Failed";
-         // }
          if(connection_status){
             lbl_style(UI[7],validity,font,spacing,GUI_TEXT_ALIGN_CENTER,ColorToInt(GREEN),{width-(twidth+scale),scale*19,lwidth,bheight});
          }else{
@@ -105,23 +103,13 @@ void launcher::update(){
       }
       //Login(WIP)
       case 1:{
-         if(!connection_status){
+         if(connection_status){
+            validity = "VALID";
+            lwidth = scale*15;
+            net->send("0 "+gamefile[0]+" "+gamefile[1]);
+         }else{
             validity = "Not Connected";
             lwidth = scale*22;
-         }else{
-            lwidth = scale*15;
-            if(net->start()==EXIT_FAILURE){
-               printf("<--FAILED-->\n");
-               validity = "No Network";
-               connection_status = false;
-            }else{
-               validity = "VALID";
-            }
-            //
-            //
-            //poll for response
-            //
-            //
          }
          if(validity=="VALID"){
             lbl_style(UI[7],validity,font,spacing,GUI_TEXT_ALIGN_CENTER,ColorToInt(GREEN),{width-(twidth+scale),scale*19,lwidth,bheight});

@@ -33,7 +33,7 @@ class network{
       network();//default
       network(string address, unsigned short port, int outgoing, int channels, int inbandwidth, int outbandwidth);
       ~network();
-      string poll();//[0] = status, [...] = actions
+      void poll(string&);//[0] = status, [...] = actions
       bool start();//check connection
       bool disconnect();
       bool connect(string connectData);

@@ -10,13 +10,13 @@ LFLAG := -lpthread -lenet
 ifeq ($(OS),Windows_NT)
 	CC := clang++
 	PLAT := Windows
+	LFLAG += -L lib/Windows
 else
 	OS = $(shell uname -s)
 	ifeq ($(OS), Linux)
 		PLAT := Linux
 	else
 		PLAT := Mac
-		CFLAG += -I include
 		LFLAG += -L lib/$(PLAT)
 	endif
 endif

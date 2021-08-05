@@ -22,7 +22,7 @@ using std::string;
 class network{
    private:
       void* client;
-      void* server;
+      void* peer;
       string addressName;
       unsigned short port;
       int outgoing;
@@ -34,10 +34,10 @@ class network{
       network(string address, unsigned short port, int outgoing, int channels, int inbandwidth, int outbandwidth);
       ~network();
       string poll();//[0] = status, [...] = actions
-      bool start();//check connection
-      bool disconnect();
-      bool connect(string connectData);
-      void sendPacket(string data);
+      int init();//check connection
+      int disconnect();
+      int connect(string domain,int port,string data);
+      int send(string data);
 };
 
 #endif
