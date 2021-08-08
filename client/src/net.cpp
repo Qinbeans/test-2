@@ -67,7 +67,7 @@ int network::connect(string domain,int port,string data){
          case ENET_EVENT_TYPE_CONNECT:{
             printf("(Client) We got a new connection from %x\n",event.peer->address.host);
             send(data);
-            break;
+            return EXIT_SUCCESS;
          }
          case ENET_EVENT_TYPE_DISCONNECT:{
             printf("(Client) %s disconnected.\n", event.peer->data);
@@ -77,7 +77,7 @@ int network::connect(string domain,int port,string data){
          }
       }
    }
-   return EXIT_SUCCESS;
+   return EXIT_FAILURE;
 }
 
 int network::send(string data){

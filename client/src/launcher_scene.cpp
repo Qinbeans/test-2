@@ -20,8 +20,10 @@ launcher::launcher(string name, unsigned int width, unsigned int height, int res
    this->width = width;
    this->height = height;
    scale = this->height/CHUNK;
+   camera = {0};
    textbox = -1;
    status = -1;
+   obj_count = 0;
    login_status = false;
    bwidth = scale*10;
    bheight = scale*3;
@@ -29,7 +31,7 @@ launcher::launcher(string name, unsigned int width, unsigned int height, int res
    lwidth = scale*15;
    font = scale*2;
    spacing = scale/2;
-   net = NULL;
+   net = nullptr;
    connection_status = false;
    file_loc = get_game_dir();
    filename = "/gamedata.inline";
@@ -49,11 +51,35 @@ launcher::launcher(string name, unsigned int width, unsigned int height, int res
       update();
       EndDrawing();
    }
+   //clean up models
+   for(unsigned int i = 0; i < obj_count; i++){
+      for(int n = 0; n < objects[i].count; n++){
+         UnloadModelAnimation(objects[i].animation[n]);
+      }
+      RL_FREE(objects[i].animation);
+      UnloadModel(objects[i].model);
+   }
    CloseWindow();
 }
 
 void launcher::update(){
    string concat_game;
+   UpdateCamera(&camera);
+
+
+   BeginMode3D(camera);
+   for(int i = 0; i < obj_count; i++){
+      // printf("<Drawing FrameCounter: %d>\n",objects[i].frame_counter);
+      objects[i].frame_counter++;
+      if(objects[i].frame_counter >= objects[i].animation[0].frameCount) objects[i].frame_counter = 0;
+      UpdateModelAnimation(objects[i].model,objects[i].animation[0],objects[i].frame_counter);
+      DrawModelEx(objects[i].model, objects[i].pos, (Vector3){ 1.0f, 0.0f, 0.0f }, -90.0f, (Vector3){ 1.0f, 1.0f, 1.0f }, WHITE);
+   }
+   DrawGrid(10, 1.0f);
+   EndMode3D();
+
+
+   //main
    if(was_pressed){
       set_screen();
       was_pressed = false;
@@ -71,7 +97,7 @@ void launcher::update(){
          //Connect use new thread
          bool ret;
          lwidth = scale*15;
-         if(net!=NULL){
+         if(net!=nullptr){
             free(net);
          }
          net = new network();
@@ -199,6 +225,22 @@ void launcher::init(){
    // printf("<0: %s, 1: %s, 2: %s, 3: %s>\n",gamefile[0].c_str(),gamefile[1].c_str(),gamefile[2].c_str(),gamefile[3].c_str());
 
    validity = (gamefile[1]=="NULL")?"INVALID":"NO SERVER";
+
+   //set camera
+   camera.position = {10.0f,10.0f,10.0f};
+   camera.target = {0.0f,0.0f,0.0f};
+   camera.up = (Vector3){ 0.0f, 1.0f, 0.0f }; 
+   camera.fovy = 45.0f;
+   camera.projection = CAMERA_PERSPECTIVE;
+   SetCameraMode(camera,CAMERA_FREE);
+
+   //3D model for 1 object hence useage of sizeof(object)
+   objects = (object*)malloc(sizeof(object));
+   set_obj(objects[0],"res/model/ballMesh.iqm","res/img/ballTexture.png","res/model/ballAnim.iqm");
+   objects[0].pos = {0,0,0};
+   obj_count++;
+   print_obj(objects[0]);
+
    SetTargetFPS(stoi(gamefile[3]));
    set_screen();
 }

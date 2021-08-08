@@ -52,6 +52,9 @@ class launcher: public scene{
       void init();
       void update();
       void set_screen();
+      object* objects;
+      unsigned int obj_count;
+      Camera camera;
    public:
       launcher(string name, unsigned int width, unsigned int height, int resize);
 };
