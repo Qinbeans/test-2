@@ -11,7 +11,7 @@
 
 #include "launcher_scene.h"
 #include "raygui.h"
-#include <future>
+#include <thread>
 
 
 
@@ -51,6 +51,7 @@ launcher::launcher(string name, unsigned int width, unsigned int height, int res
       update();
       EndDrawing();
    }
+
    //clean up models
    for(unsigned int i = 0; i < obj_count; i++){
       for(int n = 0; n < objects[i].count; n++){
@@ -69,7 +70,7 @@ void launcher::update(){
 
    BeginMode3D(camera);
    for(int i = 0; i < obj_count; i++){
-      // printf("<Drawing FrameCounter: %d>\n",objects[i].frame_counter);
+      printf("<Drawing FrameCounter: %d>\n",objects[i].frame_counter);
       objects[i].frame_counter++;
       if(objects[i].frame_counter >= objects[i].animation[0].frameCount) objects[i].frame_counter = 0;
       UpdateModelAnimation(objects[i].model,objects[i].animation[0],objects[i].frame_counter);
@@ -239,6 +240,7 @@ void launcher::init(){
    set_obj(objects[0],"res/model/ballMesh.iqm","res/img/ballTexture.png","res/model/ballAnim.iqm");
    objects[0].pos = {0,0,0};
    obj_count++;
+
    print_obj(objects[0]);
 
    SetTargetFPS(stoi(gamefile[3]));

@@ -24,15 +24,6 @@ network::~network(){
    delete (ENetPeer*) peer;
 }
 
-network::network(string address, unsigned short port, int outgoing, int channels, int inbandwidth, int outbandwidth){
-   addressName = address;
-   this->port = port;
-   this->outgoing = outgoing;
-   this->channels = channels;
-   this->inbandwidth = inbandwidth;
-   this->outbandwidth = outbandwidth;
-}
-
 int network::init(){
    printf("<ENET INIT>\n");
    if (enet_initialize() != 0) {
@@ -66,8 +57,10 @@ int network::connect(string domain,int port,string data){
       switch(event.type) {
          case ENET_EVENT_TYPE_CONNECT:{
             printf("(Client) We got a new connection from %x\n",event.peer->address.host);
-            send(data);
-            return EXIT_SUCCESS;
+            if(send(data)==EXIT_SUCCESS){
+               return EXIT_SUCCESS;
+            }
+            break;
          }
          case ENET_EVENT_TYPE_DISCONNECT:{
             printf("(Client) %s disconnected.\n", event.peer->data);
@@ -112,7 +105,7 @@ int network::disconnect(){
    return EXIT_SUCCESS;
 }
 
-string network::poll(){
+void network::poll(){
    ENetHost* workingClient = (ENetHost*) client;
    ENetEvent event;
    while(true){

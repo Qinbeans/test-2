@@ -1,7 +1,7 @@
 client/bin/*
 server/bin/*
 bin/*
-client/iqm.exe
+client/iqm/*
 client/client.code-workspace
 client/.vscode
 server/server.code-workspace
