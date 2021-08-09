@@ -34,6 +34,7 @@ class launcher: public scene{
    protected:
       Style UI[NUM_UI];
       string gamefile[NUM_DATA];
+      Vector2 crosshair;
       int status;
       bool was_pressed;
       short textbox;

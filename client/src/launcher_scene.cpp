@@ -9,9 +9,12 @@
  * 
  */
 
+#define SUPPORT_FILEFORMAT_IQM
+
 #include "launcher_scene.h"
 #include "raygui.h"
 #include <thread>
+
 
 
 
@@ -20,6 +23,7 @@ launcher::launcher(string name, unsigned int width, unsigned int height, int res
    this->width = width;
    this->height = height;
    scale = this->height/CHUNK;
+   crosshair = {scale,scale};
    camera = {0};
    textbox = -1;
    status = -1;
@@ -46,6 +50,13 @@ launcher::launcher(string name, unsigned int width, unsigned int height, int res
          scale = GetScreenHeight()/CHUNK;
          this->width = GetScreenWidth();
          this->height = GetScreenHeight();
+         bwidth = scale*10;
+         bheight = scale*3;
+         twidth = scale*25;
+         lwidth = scale*15;
+         font = scale*2;
+         spacing = scale/2;
+         camera.position.y = scale/2;
          set_screen();
       }
       update();
@@ -66,19 +77,30 @@ launcher::launcher(string name, unsigned int width, unsigned int height, int res
 void launcher::update(){
    string concat_game;
    UpdateCamera(&camera);
+   float meshScale = scale/10;
+
+   if(IsKeyPressed(KEY_ONE) && !IsCursorHidden()){
+      HideCursor();
+      SetCameraMode(camera,CAMERA_FIRST_PERSON);
+   }else if(IsKeyPressed(KEY_TWO) && IsCursorHidden()){
+      ShowCursor();
+      SetCameraMode(camera,CAMERA_FREE);
+   }
 
 
    BeginMode3D(camera);
    for(int i = 0; i < obj_count; i++){
-      printf("<Drawing FrameCounter: %d>\n",objects[i].frame_counter);
+      // printf("<Frame: %d>\n",objects[i].frame_counter);
       objects[i].frame_counter++;
       if(objects[i].frame_counter >= objects[i].animation[0].frameCount) objects[i].frame_counter = 0;
       UpdateModelAnimation(objects[i].model,objects[i].animation[0],objects[i].frame_counter);
-      DrawModelEx(objects[i].model, objects[i].pos, (Vector3){ 1.0f, 0.0f, 0.0f }, -90.0f, (Vector3){ 1.0f, 1.0f, 1.0f }, WHITE);
+      DrawModelEx(objects[i].model, objects[i].pos, { 1.0f, 0.0f, 0.0f }, 0.0f, { meshScale, meshScale, meshScale }, WHITE);
    }
-   DrawGrid(10, 1.0f);
+   DrawGrid(scale, 1.0f);
    EndMode3D();
 
+   DrawLineEx({(float)width/2,(height/2)-crosshair.y},{(float)width/2,crosshair.y+(height/2)},scale/9,WHITE);
+   DrawLineEx({(width/2)-crosshair.x,(float)height/2},{crosshair.x+(width/2),(float)height/2},scale/9,WHITE);
 
    //main
    if(was_pressed){
@@ -228,17 +250,19 @@ void launcher::init(){
    validity = (gamefile[1]=="NULL")?"INVALID":"NO SERVER";
 
    //set camera
-   camera.position = {10.0f,10.0f,10.0f};
+   camera.position = {10.0f,scale/2,10.0f};
    camera.target = {0.0f,0.0f,0.0f};
    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f }; 
-   camera.fovy = 45.0f;
+   camera.fovy = 60.0f;
    camera.projection = CAMERA_PERSPECTIVE;
    SetCameraMode(camera,CAMERA_FREE);
+   ShowCursor();
 
    //3D model for 1 object hence useage of sizeof(object)
    objects = (object*)malloc(sizeof(object));
-   set_obj(objects[0],"res/model/ballMesh.iqm","res/img/ballTexture.png","res/model/ballAnim.iqm");
-   objects[0].pos = {0,0,0};
+   set_obj(objects[0],"res/model/ballMesh.glb","res/img/ballTexture.png","res/model/ballAnim.glb");
+   objects[0].pos = {0,-1,0};
+   objects[0].rot = {0,0,0};
    obj_count++;
 
    print_obj(objects[0]);
@@ -250,6 +274,7 @@ void launcher::init(){
 void launcher::set_screen(){
    string names[NUM_UI] = {"Connect","Login","Play","Quit","Name: "+gamefile[0],"ID: "+gamefile[1],"IP: "+gamefile[2],validity};
    //ADD TEST BOX FOR WHO THE USER IS AND WHAT SERVER THEY ARE CONNECTED TO
+
    for(int i = 0; i < 4; i++){
       lbl_style(UI[i],names[i],font,spacing,GUI_TEXT_ALIGN_CENTER,ColorToInt(BLUE),{scale,scale+scale*(i*6),bwidth,bheight});
       //debug

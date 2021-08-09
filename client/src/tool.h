@@ -75,6 +75,7 @@ typedef struct object{
    int count;
    int frame_counter;
    Vector3 pos;
+   Vector3 rot;
 }object;
 
 bool draw_lblb(Style style, Color frame_color);
