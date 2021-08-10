@@ -9,7 +9,7 @@
  * 
  */
 
-#define SUPPORT_FILEFORMAT_IQM
+#define SUPPORT_FILEFORMAT_GLTF
 
 #include "launcher_scene.h"
 #include "raygui.h"
@@ -18,11 +18,12 @@
 
 
 
-launcher::launcher(string name, unsigned int width, unsigned int height, int resize){
+launcher::launcher(string name, string filepath, unsigned int width, unsigned int height, int resize){
    this->name = name;
    this->width = width;
    this->height = height;
    scale = this->height/CHUNK;
+   this->filepath = filepath;
    crosshair = {scale,scale};
    camera = {0};
    textbox = -1;
@@ -40,6 +41,31 @@ launcher::launcher(string name, unsigned int width, unsigned int height, int res
    file_loc = get_game_dir();
    filename = "/gamedata.inline";
    int flag = resize;
+
+   //extract filepath of executable
+   string temp = "";
+   int maxslsh = 0;
+   int countslsh = 0;
+   for(char c: filepath){
+      if(c == '\\'){
+         maxslsh++;
+      }
+   }
+   for(char c: filepath){
+      if(c == '\\'){
+         countslsh++;
+         temp+='/';
+      }else{
+         temp+=c;
+      }
+      if(countslsh == maxslsh){
+         break;
+      }
+   }
+
+   this->filepath = temp;
+   printf("<Parent Dir: %s>\n",this->filepath.c_str());
+
    SetConfigFlags(flag);
    InitWindow(width,height,name.c_str());
    init();
@@ -57,6 +83,7 @@ launcher::launcher(string name, unsigned int width, unsigned int height, int res
          font = scale*2;
          spacing = scale/2;
          camera.position.y = scale/2;
+         objects[0].pos = {0,-0.1f*scale,0};
          set_screen();
       }
       update();
@@ -260,8 +287,8 @@ void launcher::init(){
 
    //3D model for 1 object hence useage of sizeof(object)
    objects = (object*)malloc(sizeof(object));
-   set_obj(objects[0],"res/model/ballMesh.glb","res/img/ballTexture.png","res/model/ballAnim.glb");
-   objects[0].pos = {0,-1,0};
+   set_obj(objects[0],filepath+"/res/model/ballAnim.glb",filepath+"res/img/ballTexture.png",filepath+"res/model/ballAnim.glb");
+   objects[0].pos = {0,-0.1f*scale,0};
    objects[0].rot = {0,0,0};
    obj_count++;
 

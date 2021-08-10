@@ -34,6 +34,7 @@ class launcher: public scene{
    protected:
       Style UI[NUM_UI];
       string gamefile[NUM_DATA];
+      string filepath;
       Vector2 crosshair;
       int status;
       bool was_pressed;
@@ -57,7 +58,7 @@ class launcher: public scene{
       unsigned int obj_count;
       Camera camera;
    public:
-      launcher(string name, unsigned int width, unsigned int height, int resize);
+      launcher(string name, string filepath, unsigned int width, unsigned int height, int resize);
 };
 
 #endif
