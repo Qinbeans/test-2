@@ -11,6 +11,7 @@
  * 
  */
 #include "raylib.h"
+#include <unistd.h>
 #include <string>
 
 #ifndef TOOL_H
@@ -67,6 +68,16 @@ typedef struct Style{
    Rectangle frame;
 }Style;
 
+typedef struct object{
+   Model model;
+   Texture2D texture;
+   ModelAnimation* animation;
+   int count;
+   int frame_counter;
+   Vector3 pos;
+   Vector3 rot;
+}object;
+
 bool draw_lblb(Style style, Color frame_color);
 
 void draw_lbl(Style style, Color frame_color);
@@ -92,5 +103,11 @@ void write(string file_loc, string filename, string message);
 void split(string strong_data[NUM_DATA], const char delim, string data);
 
 string get_game_dir();
+
+void set_obj(object& obj, string model, string texture, string animation);
+
+void set_obj(object& obj, string model, string texture);
+
+void print_obj(const object& obj);
 
 #endif

@@ -11,13 +11,14 @@
  * 
  */
 #include "net.h"
-#include <enet/enet.h>
+// #include <enet/enet.h>
 #define NUM_CLIENTS 32
 
 int main(){
+   string packet;
    network net("",25570,NUM_CLIENTS,2,0,0);
    net.start();
-   net.poll();
+   net.poll(packet);
    
    // if (enet_initialize())
    // {

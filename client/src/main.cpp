@@ -10,9 +10,10 @@
  */
 #include "launcher_scene.h"
 
-int main(){
+int main(int argc, char* argv[]){
+   printf("<Path: %s>\n",argv[0]);
    printf("<--Start-->\n");
-   launcher launchpage("Welcome",960,540,FLAG_WINDOW_RESIZABLE);
+   launcher launchpage("Welcome",argv[0],960,540,FLAG_WINDOW_RESIZABLE);
    printf("<--Done-->\n");
    return EXIT_SUCCESS;
 }

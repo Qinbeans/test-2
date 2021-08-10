@@ -32,16 +32,13 @@ My network wrapper for ENet.
 
 ## Starting Net
 ```cpp
-int outgoing = 1;//how many channels go out
-int channels = 2;//how many channels exist
-int bandwidth = 0;//how large the data being sent can be, but 0 just means any size
-network net("localhost", 25570, outgoing, channels, bandwidth, bandwidth);
-net.start();
+network net();
+net.init();
 ```
 ## Connecting
 ```cpp
 string init_pkt = "Hello World"//connect requires a packet to be sent
-net.connect(init_pkt);
+net.connect("localhost",1234,init_pkt);
 ```
 
 ## Disconnecting
@@ -60,5 +57,8 @@ string ID = "1p231H";
 string event1 = "KEY_W";
 string event2 = "KEY_SHIFT";
 string packet = "2 "+ID+" "+event1+" "+event2;
-sendPacket(str);
+net.send(str);
 ```
+
+# Hint
+If you're looking to use this in a project with multiple classes that work together and you plan on passing around networking, keep the network object as a pointer.

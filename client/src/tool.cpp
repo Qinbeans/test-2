@@ -143,3 +143,24 @@ string get_game_dir(){
    }
    return base_dir;
 }
+
+void set_obj(object& obj, string model, string texture, string animation){
+   obj.model = LoadModel(model.c_str());
+   obj.texture = LoadTexture(texture.c_str());
+   SetMaterialTexture(&obj.model.materials[0],MAP_DIFFUSE,obj.texture);
+   obj.count = 0;
+   obj.animation = LoadModelAnimations(animation.c_str(),&obj.count);
+   obj.frame_counter = 0;
+}
+
+void set_obj(object& obj, string model, string texture){
+   obj.model = LoadModel(model.c_str());
+   obj.texture = LoadTexture(texture.c_str());
+   obj.count = 0;
+   SetMaterialTexture(&obj.model.materials[0],MAP_DIFFUSE,obj.texture);
+   obj.frame_counter = 0;
+}
+
+void print_obj(const object& obj){
+   printf("<--Object-- Bone Count: %d, Count: %d, Frame Count: %d/%d, Pos X: %.2f Y: %.2f Z: %.2f>\n",obj.animation->boneCount,obj.count,obj.frame_counter,obj.animation->frameCount,obj.pos.x,obj.pos.y,obj.pos.z);
+}
