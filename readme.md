@@ -11,6 +11,7 @@ This will initialize the folders required for making the game and only needs to 
 -[Clang](https://packages.msys2.org/package/mingw-w64-x86_64-clang): [Website](https://clang.llvm.org/)<br>
 -[Enet](https://packages.msys2.org/package/mingw-w64-x86_64-enet?repo=mingw64): [Website](http://enet.bespin.org/)<br>
 -[Raylib](https://www.raylib.com/) *This is already installed for most devices*<br>
+-[ODE](https://bitbucket.org/odedevs/ode/src/master/) *This might be the best physics engine for the game*<br>
 ### Installation
 -Follow MSYS installation guide (click/launch and choose configuration you want)<br>
 -Launch MSYS2 and copy the following commands<br>
