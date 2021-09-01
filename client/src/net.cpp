@@ -63,7 +63,7 @@ int network::connect(string domain,int port,string data){
             break;
          }
          case ENET_EVENT_TYPE_DISCONNECT:{
-            printf("(Client) %s disconnected.\n", event.peer->data);
+            printf("(Client) %s disconnected.\n", (char*)event.peer->data);
             // Reset client's information
             event.peer->data = NULL;
             break;
@@ -113,9 +113,9 @@ void network::poll(){
          switch(event.type){
             case ENET_EVENT_TYPE_RECEIVE:{
                printf("<A packet of length %u containing %s was received from %s on channel %u.>\n",
-                  event.packet->dataLength,
+                  (unsigned int)event.packet->dataLength,
                   event.packet->data,
-                  event.peer->data,
+                  (char*)event.peer->data,
                   event.channelID);
                enet_packet_destroy(event.packet);
                break;

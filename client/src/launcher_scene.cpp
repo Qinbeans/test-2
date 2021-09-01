@@ -47,12 +47,12 @@ launcher::launcher(string name, string filepath, unsigned int width, unsigned in
    int maxslsh = 0;
    int countslsh = 0;
    for(char c: filepath){
-      if(c == '\\'){
+      if(c == '\\' || c == '/'){
          maxslsh++;
       }
    }
    for(char c: filepath){
-      if(c == '\\'){
+      if(c == '\\' || c == '/'){
          countslsh++;
          temp+='/';
       }else{
@@ -63,8 +63,9 @@ launcher::launcher(string name, string filepath, unsigned int width, unsigned in
       }
    }
 
+   printf("<Pre Parent Dir: %s, maxslsh: %d>\n",this->filepath.c_str(),maxslsh);
    this->filepath = temp;
-   printf("<Parent Dir: %s>\n",this->filepath.c_str());
+   printf("<Post Parent Dir: %s>\n",this->filepath.c_str());
 
    SetConfigFlags(flag);
    InitWindow(width,height,name.c_str());
@@ -292,7 +293,7 @@ void launcher::init(){
    objects[0].rot = {0,0,0};
    obj_count++;
 
-   print_obj(objects[0]);
+   // print_obj(objects[0]);
 
    SetTargetFPS(stoi(gamefile[3]));
    set_screen();
